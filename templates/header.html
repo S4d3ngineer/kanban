@@ -1,0 +1,29 @@
+<header>
+    <nav class="navbar navbar-expand navbar-dark bg-dark p-2">
+        <div class="container-fluid">
+            <a class="navbar-brand h1" href="{{url_for('index')}}">Kanban</a>
+            <div>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-2">
+                        <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a href="{{ url_for('register') }}" class="nav-link">Register</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+                    </li>
+                </ul>
+                <!-- <a href="{{ url_for('login') }}" class="header-link">
+                    <button type="button" id="login-button" class="btn btn-primary">Login</button>
+                </a>
+                <a href="{{ url_for('register') }}" class="header-link">
+                    <button type="button" id="register-button" class="">Register</button>
+                </a>
+                <a href="{{ url_for('logout') }}" class="header-link">
+                    <button type="button" id="logout-button" class="">Logout</button>
+                </a>     -->
+            </div>
+        </div>
+    </nav>
+</header>

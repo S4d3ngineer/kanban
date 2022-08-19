@@ -1,0 +1,11 @@
+body {
+    background-color: darkslategray;
+}
+
+#form {
+    max-width: 300px;
+}
+
+#app {
+    overflow-x: auto;
+}
