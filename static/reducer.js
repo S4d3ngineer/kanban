@@ -42,7 +42,7 @@ export const reducer = (stateCopy, action) => {
       // };
       // return newState;
       const newTask = {
-        client_side_id: getUniqueTaskId(stateCopy),
+        client_side_id: getUniqueTaskId(stateCopy.tables),
         content: action.payload.content,
       };
       const updatedTable = stateCopy.tables.find(
@@ -123,7 +123,7 @@ export const reducer = (stateCopy, action) => {
     }
     case CREATE_TABLE: {
       const newTable = {
-        client_side_id: getUniqueTableId(stateCopy),
+        client_side_id: getUniqueTableId(stateCopy.tables),
         title: "New Table",
         tasks: [],
       };

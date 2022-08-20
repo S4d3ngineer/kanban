@@ -1,21 +1,8 @@
-import Table from "./Table.js";
-import { deepCopy, insertTable } from "./helpers.js";
+import { deepCopy, insertTable, saveChanges, dbGetUserData } from "./helpers.js";
 import { makeInitializeTablesAction, makeInsertTableAction } from "./actions.js";
 import { reducer } from "./reducer.js";
 
 const appRoot = document.querySelector("#app");
-
-function debounce(callback, delay = 5000) { // TODO move to helper along with other functions maybe? Like NewLoadTables dbGetData itp.
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      callback(...args);
-    }, delay);
-  }
-};
-
-const saveChanges = debounce((data) => dbSaveData(data));
 
 // Using Redux-like design pattern in designing store object
 const store = {
@@ -32,15 +19,7 @@ const store = {
     callback(this.newData);
   },
 
-  newSetData(newData) {
-    this.newData = deepCopy(newData);
-    this.newObservers.forEach((observer) => {
-      observer(this.newData);
-    });
-  },
-
-  // Action contains its name and a payload
-  /**
+  /** Dispatching new action based on its type and passing payload to reducer function
    *
    * @param { {type: Symbol, payload: obj} } action
    */
@@ -54,11 +33,7 @@ const store = {
   },
 };
 
-// MAIN FN ------------------------------------------------
-
 if (appRoot) {
-  // loadTables(store);
-  // .then () => initialized = true;
   const addTableButton = document.querySelector("#add-table");
   // Preventing user from smashing "add" before tables load
   store.newSubscribe((data) => {
@@ -70,49 +45,24 @@ if (appRoot) {
     };
   });
 
-  newLoadTables();
+  const tableData = await dbGetUserData();
+  store.newDispatchAction(makeInitializeTablesAction(tableData));
+
   store.newSubscribe((data) => {
     if (data.initialized) {
+      // Currently each tables is re-rendered up writing data to store
       const existingTables = document.querySelectorAll(".kanban-table");
       existingTables.forEach((table) => table.remove());
 
-      // do sth to render tables
       data.tables.forEach((table) => {
         insertTable(appRoot, table, action => store.newDispatchAction(action));
       });
     }
   });
+
   store.newSubscribe((data) => {
     if (data.initialized) {
       saveChanges(data.tables);
     }
   })
-}
-
-// -----------------------------------------------------
-
-async function newLoadTables() {
-  const tableData = await dbGetUserData();
-
-  store.newDispatchAction(makeInitializeTablesAction(tableData));
-}
-
-async function dbGetUserData() {
-  const response = await fetch("http://127.0.0.1:5000/get_user_data");
-  return response.json();
-}
-
-async function dbSaveData(data) {
-  const response = await fetch("http://127.0.0.1:5000/update_user_data", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-    
-  })
-  
-  response.ok
-   ? console.log("PUT has succeed")
-   : console.log("PUT has failed");
 }
