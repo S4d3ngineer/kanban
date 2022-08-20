@@ -21,6 +21,7 @@ def load_user(user_id):
     return db_session.query(User).filter_by(id=user_id).first()
 
 
+# Automatically removing database connection after request ends
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
@@ -32,11 +33,10 @@ def index():
         return redirect(url_for('register'))
     return render_template('index.html', title='Homepage')
 
-############################################################################
-
 
 @app.route('/get_user_data')
 def get_user_data():
+    # Fetching user data from database
     tables = db_session.query(Table).filter_by(
         user_id=current_user.id).order_by(Table.position).all()
     logger.debug(f'Getting user table objects: {tables}')
@@ -84,22 +84,19 @@ def update_user_data():
     # Creating list of all tables and tasks to figure which ones were deleted on client side
     tables_registry = db_session.query(
         Table).filter_by(user_id=current_user.id).all()
-    logger.debug(f'tables_registry: {tables_registry}')
     tasks_registry = []
     for table in tables_registry:
         table_tasks = db_session.query(Task).filter_by(table_id=table.id).all()
-        # TODO get rid of unnecessary loggers
-        logger.debug(f'table_tasks: {table_tasks}')
         tasks_registry = [*tasks_registry, *table_tasks]
-    logger.debug(f'tasks_registry: {tasks_registry}')
 
+    # Update/add tables/tasks
     for table_index, table_data in enumerate(data):
-        # Update/add tables
-        # TODO also you can encapsulate it into funcitons to make it look tidy
         table = db_session.query(Table).filter_by(
             client_side_id=table_data['client_side_id'],
             user_id=current_user.id
         ).first()
+
+        # If table already exists in database update its data, else insert new row to tables table
         if table:
             tables_registry.remove(table)
             table.title = table_data['title']
@@ -117,14 +114,13 @@ def update_user_data():
             db_session.refresh(new_table)
 
         for task_index, task_data in enumerate(table_data['tasks']):
+
             task = db_session.query(Task).filter_by(
                 client_side_id=task_data['client_side_id'],
                 table_id=table_data['client_side_id']
             ).first()
-            # parent_table = db_session.query(Table).filter_by(
-            #     client_side_id=table_data['client_side_id'],
-            #     user_id=current_user.id
-            #     ).first()
+
+            # If task already exists in database update its data, else insert new row to tasks table
             if task:
                 tasks_registry.remove(task)
                 task.content = task_data['content']
@@ -151,121 +147,6 @@ def update_user_data():
 
     return jsonify(data)
 
-############################################################################
-
-# @app.route('/get_tables') ## TODO login requierd to access?
-# def get_tables():
-#     tables = db_session.query(Table).filter_by(user_id=current_user.id).all()
-#     tables_list = []
-#     for table in tables:
-#         dictionary = table.__dict__
-#         dictionary.pop('_sa_instance_state')
-#         tables_list.append(dictionary)
-
-#     logger.info(f'get_tables: {tables_list}')
-
-#     # sample_json = {
-#     #     "data": {
-#     #         "tasks": [
-#     #         {
-#     #             "content": "fdas",
-#     #             "id": 933584848
-#     #         }
-#     #         ],
-#     #         "title": "New Table"
-#     #     },
-#     #     "id": 125404797
-#     #     }
-
-#     data = jsonify(tables_list)
-
-#     return data
-
-# @app.route('/get_table_tasks')
-# def get_table_tasks():
-
-#     data = request.get_json()
-#     tasks = db_session.query(Task).filter_by(table_id=data.id)
-#     tasks_list = []
-#     for task in tasks:
-#         dictionary = task.__dict__
-#         dictionary.pop('_sa_instance_state')
-#         tasks_list.append(dictionary)
-
-#     logger.info(f'tasks_list: {tasks_list}')
-#     data = jsonify(tasks_list)
-
-#     return data
-
-# # TODO make it return new_data
-# @app.route('/insert_table', methods=['POST'])
-# def insert_table():
-
-#     user_id = current_user.id
-#     data = request.get_json()
-#     logger.info(f'insert_table: {data}')
-
-#     new_table = Table(
-#         title='New Table',
-#         user_id=user_id,
-#         position=data
-#     )
-
-#     db_session.add(new_table)
-#     db_session.commit()
-#     DbSession.remove()
-
-#     tables = db_session.query(Table).filter_by(user_id=current_user.id).all()
-#     updated_list = []
-#     for table in tables:
-#         dictionary = table.__dict__
-#         dictionary.pop('_sa_instance_state')
-#         updated_list.append(dictionary)
-
-#     logger.info(f'after table insert: {updated_list}')
-
-#     return jsonify(updated_list)
-
-# @app.route('/put_task', methods=['PUT'])
-# def put_task():
-#     data = request.json()
-#     logger.info(f'put_task: {data}')
-
-#     task = Task(
-
-#     )
-
-# # TODO make it return updated data
-# @app.route('/delete_table', methods=['DELETE'])
-# def delete_table():
-#     data = request.get_json()
-#     logger.info(f'delete_table: {data}')
-
-#     table_id = data
-#     table_to_delete = db_session.query(Table).filter_by(id=table_id).first()
-#     db_session.delete(table_to_delete)
-#     db_session.commit()
-#     DbSession.remove()
-
-#     tables = db_session.query(Table).filter_by(user_id=current_user.id).all()
-#     updated_list = []
-#     for table in tables:
-#         dictionary = table.__dict__
-#         dictionary.pop('_sa_instance_state')
-#         updated_list.append(dictionary)
-
-#     logger.info(f'list after deleting table: {updated_list}')
-
-#     return jsonify(updated_list)
-
-# # TODO consider throwing this shit out of the windooow! through the wall!
-# @app.route('/update_data', methods=['PUT'])
-# def update_user_data():
-#     data = json.loads(request.data)
-#     logger.info('put', data)
-
-#     return jsonify(data)
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -276,22 +157,16 @@ def register():
 
         username = form.username.data
         password = form.password.data
-        # email = form.email.data
 
         # Encrypt password before storing it in the database
         encrypted_password = generate_password_hash(
             password, method='pbkdf2:sha256', salt_length=8)
 
-        # if db_session.query(User).filter_by(email=email).first():
-        #     flash('This email has been already registered.')
-        #     flash('Try logging in instead!')
-        #     return redirect(url_for('login'))
         if db_session.query(User).filter_by(username=username).first():
             flash('This username is already taken')
         else:
             new_user = User(
                 username=username,
-                # email=email,
                 password=encrypted_password
             )
 

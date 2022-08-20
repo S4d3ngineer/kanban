@@ -27,20 +27,6 @@ export const reducer = (stateCopy, action) => {
       return newState;
     }
     case ADD_TASK: {
-      // const newState = {
-      //   ...stateCopy,
-      //   tables: stateCopy.tables.map((table) => {
-      //     if (table.client_side_id === action.payload.tableId) {
-      //       const newTask = {
-      //         client_side_id: getUniqueTaskId(stateCopy),
-      //         content: action.payload.content,
-      //       };
-      //       table.tasks.push(newTask);
-      //     }
-      //     return table;
-      //   }),
-      // };
-      // return newState;
       const newTask = {
         client_side_id: getUniqueTaskId(stateCopy.tables),
         content: action.payload.content,
@@ -62,17 +48,6 @@ export const reducer = (stateCopy, action) => {
       return stateCopy;
     }
     case EDIT_TABLE_TITLE: {
-      // const newState = {
-      //   ...stateCopy,
-      //   tables: stateCopy.tables.map(table => {
-      //     if (table.client_side_id === action.payload.tableId) {
-      //       table.title = action.payload.newTitle;
-      //     }
-      //     return table;
-      //   })
-      // }
-      // return newState;
-
       const updatedTable = stateCopy.tables.find(
         (table) => table.client_side_id === action.payload.tableId
       );
@@ -80,17 +55,6 @@ export const reducer = (stateCopy, action) => {
       return stateCopy;
     }
     case EDIT_TASK: {
-      // const newState = {
-      //   ...stateCopy,
-      //   tables: stateCopy.tables.forEach(table => table.tasks.forEach(task => {
-      //     if (task.client_side_id === payload.taskId) {
-      //       task.content = payload.newContent;
-      //     }
-      //   }))
-
-      // }
-      // return newState;
-
       loopTables: for (const table of stateCopy.tables) {
         const editedTask = table.tasks.find(
           (task) => task.client_side_id === action.payload.taskId

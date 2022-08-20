@@ -48,9 +48,9 @@ if (appRoot) {
   const tableData = await dbGetUserData();
   store.newDispatchAction(makeInitializeTablesAction(tableData));
 
+  // Currently each tables is re-rendered up writing data to store
   store.newSubscribe((data) => {
     if (data.initialized) {
-      // Currently each tables is re-rendered up writing data to store
       const existingTables = document.querySelectorAll(".kanban-table");
       existingTables.forEach((table) => table.remove());
 

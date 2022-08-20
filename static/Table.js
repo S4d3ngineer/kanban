@@ -110,7 +110,7 @@ export default class Table extends HTMLElement {
   editTableTitle = (input) => (e) => {
     if (
       (e.key === "Enter" && input.value) ||
-      (e.type === "blur" && input.value !== this._title)
+      (e.type === "blur" && input.value !== this._title) // FIXME edittable fires twice because of re rendering which fires blur(?)
     ) {
       this._dispatchAction(makeEditTableTitleAction(this._id, input.value));
     }
