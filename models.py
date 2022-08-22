@@ -10,7 +10,7 @@ class User(Base, UserMixin):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(20), unique=True)
-    email = Column(String(100), unique=True)
+    # email = Column(String(100), unique=True)
     password = Column(String(100))
     registration_date = Column(DateTime, server_default=func.now())
     tables = relationship('Table')
