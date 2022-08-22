@@ -76,6 +76,10 @@ export function insertToast(type, message) { // TODO add jdocs
   toastRoot.prepend(newToast);
 
   newToast.addEventListener('click', newToast.remove);
+  // Remove the toast after 10 seconds
+  if (type !== "warning") {
+    setTimeout(() => newToast.remove(), 10000);
+  }
 }
 
 /** 
