@@ -1,6 +1,6 @@
 import { getUniqueTableId, getUniqueTaskId, insertTable } from "./helpers.js";
 import {
-  INITIALIZE_TABLES,
+  INITIALIZE_STORE,
   ADD_TASK,
   DELETE_TASK,
   EDIT_TABLE_TITLE,
@@ -8,6 +8,7 @@ import {
   MOVE_TASK,
   CREATE_TABLE,
   DELETE_TABLE,
+  COMPLETE_INITIALIZATION,
 } from "./actions.js";
 
 /**
@@ -18,11 +19,17 @@ import {
  */
 export const reducer = (stateCopy, action) => {
   switch (action.type) {
-    case INITIALIZE_TABLES: {
+    case INITIALIZE_STORE: {
       const newState = {
         ...stateCopy,
-        tables: action.payload.tablesData,
-        initialized: true,
+        tables: action.payload.tablesData
+      };
+      return newState;
+    }
+    case COMPLETE_INITIALIZATION: {
+      const newState = {
+        ...stateCopy,
+        appInitialized: true
       };
       return newState;
     }

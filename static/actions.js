@@ -1,11 +1,22 @@
-export const INITIALIZE_TABLES = Symbol("INITIALIZE_TABLES");
+export const INITIALIZE_STORE = Symbol("INITIALIZE_TABLES");
 
 /** Setting store tables data to payload value and setting store's initialized property to true
  * @param { Array<TableData> } tablesData
  * @returns { { type: Symbol, payload: { tablesData: Array<TableData> } } } action object
  */
-export function makeInitializeTablesAction(tablesData) {
-  return { type: INITIALIZE_TABLES, payload: { tablesData } };
+export function makeInitializeStoreAction(tablesData) {
+  return { type: INITIALIZE_STORE, payload: { tablesData } };
+}
+
+export const COMPLETE_INITIALIZATION = Symbol("COMPLETE_INITIALIZATION");
+
+/** Silent action that marks app initialization as completed.
+ * Silent action does not trigger any subsribed observers
+ * 
+ * @returns { { type: Symbol, payload: { silent: boolean } } };
+ */
+export function makeCompleteInitializationAction() {
+  return { type: COMPLETE_INITIALIZATION, silent: true };
 }
 
 export const ADD_TASK = Symbol("ADD_TASK");
