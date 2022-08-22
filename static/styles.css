@@ -9,3 +9,9 @@ body {
 #app {
     overflow-x: auto;
 }
+
+#custom-toast-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+}

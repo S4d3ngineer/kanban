@@ -11,18 +11,6 @@ export default class Table extends HTMLElement {
   constructor(data, dispatchActionCallback) {
     super();
 
-    // this._store = store;
-    // Assigning id to the table
-    // if (tableId === undefined) {
-    //     const storeData = this._store.getData();
-    //     do {this._id = makeId()} while (storeData.has(this._id));
-    // } else {
-    //     this._id = tableId;
-    // }
-    // const data = this._store.getTableData(this._id);
-    // this._title = data ? data.title : 'New Table';
-    // this._list = data ? data.tasks : [];
-
     this._id = data.client_side_id;
     this._title = data.title;
     this._dispatchAction = dispatchActionCallback;
@@ -32,18 +20,7 @@ export default class Table extends HTMLElement {
     this.addEventListener("drop", this.handleDrop);
 
     // Keeps my styles separate from outside of the component in order to avoid naming conflicts
-    this.shadow = this.attachShadow({ mode: "open" });
-
-    // this._store.subscribe(this._id, ((data) => {
-    //     data.get(this._id) ? this.setList(data.get(this._id).tasks) : this.setList([]);
-    // }));
-
-    // this._store.subscribe(this._id, ((data) => { // TODO make it naive compare function and toss it to helper.js
-    //     if (JSON.stringify(data.get(this._id).tasks) !== JSON.stringify(this._list)) {
-    //         this.setList(data.get(this._id).tasks);
-    //         console.log(false);
-    //     } else {console.log(true)};
-    // }));
+    this._shadow = this.attachShadow({ mode: "open" });
     this.setList(data.tasks);
   }
 
@@ -56,50 +33,14 @@ export default class Table extends HTMLElement {
     this.render();
   }
 
-  // Fires when Table component is inserted into dom (rerendering element seems to not trigger it)
+  // Fires when Table component is inserted into dom
   connectedCallback() {
     this.render();
   }
 
-  // Function for writing data to store upon calling it
   handleNewTask = (input) => (e) => {
     if (e.key === "Enter" && input.value) {
       this._dispatchAction(makeAddTaskAction(this._id, input.value));
-
-      // const originalList = deepCopy(this.getList());
-      // let newId;
-      // const idList = []; // TODO consider pushing it to the store so it is not called every time you create a new task
-
-      /** what if store was an array of tables...
-       * {
-       *    tables: [{...}]
-       * }
-       *
-       * const idList = this._store.getData().tables
-       *  .map(_ => _.tasks)
-       *  .reduce((allTasks, tableTasks) => ([...allTasks, ...tableTasks]), [])
-       *  .map(taks => task.client_side_id)
-       *
-       */
-
-      //     this._store.getData().forEach((table => {
-      //         table.tasks.forEach((task) => {
-      //             idList.push(task.client_side_id);
-      //         });
-      //     }));
-      //     do {newId = makeId()} while (idList.includes(makeId));
-      //     const newTask = {
-      //         client_side_id: newId,
-      //         content: input.value
-      //     }
-      //     const updatedList = [...originalList, newTask];
-      //     const tableObject = {
-      //         title: this._title,
-      //         tasks: updatedList
-      //     }
-      //     this._store.setTableData(this._id, tableObject);
-      //     // After rendering updated table focus on add-task input field
-      //     this.shadow.querySelector('.add-task').focus(); // TODO to reconstruct later
     }
   };
 
@@ -114,16 +55,6 @@ export default class Table extends HTMLElement {
     ) {
       this._dispatchAction(makeEditTableTitleAction(this._id, input.value));
     }
-
-    // if (e.key === 'Enter' && input.value) {
-    //     this._title = input.value;
-    //     const list = [...this.getList()];
-    //     const tableObject = {
-    //         title: this._title,
-    //         tasks: list
-    //     }
-    //     this._store.setTableData(this._id, tableObject);
-    //     input.blur();
   };
 
   editTask = (input, taskData) => (e) => {
@@ -137,38 +68,9 @@ export default class Table extends HTMLElement {
         makeEditTaskAction(taskData.client_side_id, newContent)
       );
     }
-
-    // if (e.key === "Enter" && input.value) {
-    //   const originalList = this.getList();
-    //   // Copying an array in order to not operate on orignal // TODO make this into naiveCopy function and move it to helper
-    //   const newList = JSON.parse(JSON.stringify(originalList));
-    //   const taskToUpdate = newList.find(
-    //     (task) => task.client_side_id === taskData.client_side_id
-    //   );
-    //   taskToUpdate.content = input.value;
-    //   const tableObject = {
-    //     title: this._title,
-    //     tasks: newList,
-    //   };
-    //   this._store.setTableData(this._id, tableObject);
-
-    //   input.blur();
-    // }
   };
 
-  // adjustTextArea = (task) => {
-  //   task.style.height = (task.scrollHeight) + "px";
-  // };
-
   deleteTask = (task) => () => {
-    // const originalList = [...this.getList()];
-    // const updatedList = originalList.filter((item) => item.id !== task.id);
-    // const tableObject = {
-    //   title: this._title,
-    //   tasks: updatedList,
-    // };
-    // this._store.setTableData(this._id, tableObject);
-    console.log(task);
     this._dispatchAction(makeDeleteTaskAction(this._id, task.client_side_id));
   };
 
@@ -199,26 +101,7 @@ export default class Table extends HTMLElement {
     // Receiving data set during dragStart event
     const transferedDataJson = e.dataTransfer.getData("text/plain");
     const { sourceTableId, task } = JSON.parse(transferedDataJson);
-    // // Removing data from source table
-    // const sourceTableTasks = this._store.getTableData(sourceTableId).tasks;
-    // const sourceTableObject = {
-    //   title: this._store.getTableData(sourceTableId).title,
-    //   tasks: sourceTableTasks.filter(
-    //     (item) => item.client_side_id !== task.client_side_id
-    //   ),
-    // };
-    // this._store.setTableData(sourceTableId, sourceTableObject);
-    // // Adding data to drop target table
-    // const newList = [...this.getList()];
     const dropPosition = this.getDropPosition(e);
-    // newList.splice(dropPosition, 0, task);
-    // const targetTableObject = {
-    //   title: this._title,
-    //   tasks: newList,
-    // };
-    // this._store.setTableData(this._id, targetTableObject);
-    // console.log("store after drop:");
-    // console.log(this._store.getData());
     this._dispatchAction(
       makeMoveTaskAction(sourceTableId, this._id, dropPosition, task)
     );
@@ -226,7 +109,7 @@ export default class Table extends HTMLElement {
 
   getDropPosition(e) {
     const dropzoneTasks = [
-      ...this.shadow.querySelectorAll(".task:not(.add-task)"),
+      ...this._shadow.querySelectorAll(".task:not(.add-task)"),
     ];
     const dropY = e.clientY;
     const closest = dropzoneTasks.reduce(
@@ -246,10 +129,10 @@ export default class Table extends HTMLElement {
   // Caling this function renders table with its elements in the app
   render() {
     // Creating table root
-    this.shadow.innerHTML = `
+    this._shadow.innerHTML = `
       <div class="table"></div>
     `;
-    const table = this.shadow.querySelector(".table");
+    const table = this._shadow.querySelector(".table");
 
     const style = document.createElement("style");
     style.textContent = `
@@ -352,7 +235,7 @@ export default class Table extends HTMLElement {
         cursor: pointer;
       }
     `;
-    this.shadow.appendChild(style);
+    this._shadow.appendChild(style);
 
     // Creating title element
     const titleDiv = document.createElement("div");
@@ -422,7 +305,7 @@ export default class Table extends HTMLElement {
     addTask.addEventListener("keydown", this.handleNewTask(addTask));
     table.appendChild(addTask);
 
-    const renderedTasks = this.shadow.querySelectorAll(".task");
+    const renderedTasks = this._shadow.querySelectorAll(".task");
     renderedTasks.forEach(
       (task) => (task.style.height = task.scrollHeight + "px")
     );
@@ -430,10 +313,3 @@ export default class Table extends HTMLElement {
 }
 
 customElements.define("kanban-table", Table);
-
-// function makeId() {
-//   // Postgres integer datatype is 4 bytes and it is signed, thus max is:
-//   const maxPositiveInteger = 2 ** (4 * 8 - 1) - 1;
-//   const idFloat = Math.random() * maxPositiveInteger;
-//   return Math.round(idFloat);
-// }

@@ -8,7 +8,7 @@ import {
   MOVE_TASK,
   CREATE_TABLE,
   DELETE_TABLE,
-} from "./actions.js"; // TODO import * from ./acitons.js
+} from "./actions.js";
 
 /**
  *
@@ -41,7 +41,6 @@ export const reducer = (stateCopy, action) => {
       const tableToUpdate = stateCopy.tables.find(
         (table) => table.client_side_id === action.payload.tableId
       );
-      console.log(action.payload.taskId);
       tableToUpdate.tasks = tableToUpdate.tasks.filter(
         (task) => task.client_side_id !== action.payload.taskId
       );
@@ -107,19 +106,3 @@ export const reducer = (stateCopy, action) => {
     }
   }
 };
-
-// action { type: NOTIF, payload: { notifId, message } }
-/**
- * reducer:
- * case NOTIF:
- *   store.push(actiopn.payload);
- *   setTimeout(() => storetheManHimself.dispatchAction(
- *      { NOTIF_END, payload: { notifId }}, 5000);
- *   return store;
- */
-/**
- * store : {
- * ...
- * notifs: []
- * }
- */

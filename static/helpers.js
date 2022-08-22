@@ -1,4 +1,5 @@
 import Table from "./Table.js";
+import Toast from "./Toast.js";
 
 export function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -62,6 +63,14 @@ export function insertTable(appRoot, tableData, dispatchActionCallback) {
   appRoot.appendChild(col);
 }
 
+function insertToast(type, message) { // TODO add jdocs
+  const toastRoot = document.querySelector("#custom-toast-container");
+  const newToast = new Toast(type, message);
+  toastRoot.prepend(newToast);
+
+  newToast.addEventListener('click', newToast.remove);
+}
+
 /** 
  * 
  * @param { Callback } callback function to use debounce on
@@ -103,7 +112,11 @@ async function dbSaveData(data) {
     
   })
   
-  response.ok
-   ? console.log("PUT has succeed")
-   : console.log("PUT has failed");
+   if (response.ok) {
+    console.log("PUT has succeed");
+    insertToast("success", "Data has been saved successfuly!");
+   } else {
+   console.log("PUT has failed");
+    insertToast("failure", "Data saving resulted in failure.");
+  }
 }
