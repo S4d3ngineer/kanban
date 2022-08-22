@@ -106,7 +106,7 @@ export const saveChanges = debounce((data) => dbSaveData(data));
  * @returns 
  */
 export async function dbGetUserData() {
-  response = await fetch("https://kanban-vanilla-js.herokuapp.com/get_user_data");
+  const response = await fetch((window.location.origin + "/get_user_data"));
   return response.json();
 }
 
@@ -115,7 +115,7 @@ export async function dbGetUserData() {
  * @param { Array<Tables> } data 
  */
 async function dbSaveData(data) {
-  const response = await fetch("https://kanban-vanilla-js.herokuapp.com/update_user_data", {
+  const response = await fetch((window.location.origin + "/update_user_data"), {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
