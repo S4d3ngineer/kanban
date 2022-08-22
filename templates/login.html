@@ -17,11 +17,10 @@
             {{ form.hidden_tag() }}
 
             {{ form.username.label(class='form-label') }}
-            {{ form.username(class='form-control') }}
+            {{ form.username(class='form-control', autofocus='') }}
 
             {{ form.password.label(class='form-label') }}
             {{ form.password(class='form-control') }}
-            <!-- TODO Flash custom messages in login form -->
             <div class="mt-3">
                 {{ form.submit(class='btn btn-outline-light') }}
             </div>

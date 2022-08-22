@@ -7,7 +7,6 @@ import os
 SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
-# TODO get rid of autocomit and autoflush settings when you're done playing with it
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
 Base = declarative_base()
