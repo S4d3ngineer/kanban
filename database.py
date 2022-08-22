@@ -8,7 +8,7 @@ import os
 if os.environ.get("DATABASE_URL"):
     SQLALCHEMY_DATABASE_URL = os.environ.get("DATABASE_URL")
     if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
-        SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://")
+        SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://")
 else:
     SQLALCHEMY_DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URL")
 
