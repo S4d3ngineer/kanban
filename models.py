@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from flask_login import UserMixin
 
-from database import Base
+from database import Base, engine
 
 class User(Base, UserMixin):
     __tablename__ = 'users'
@@ -34,4 +34,4 @@ class Task(Base):
     position = Column(Integer, nullable=False)
     content = Column(String(100))
     
-
+Base.metadata.create_all(engine)
