@@ -43,7 +43,7 @@ def get_user_data():
 
     # If no tables exists return empty list
     if not tables:
-        return []
+        return jsonify([])
 
     # Getting rid of orm object data from table dictionaries
     tables_list = []
