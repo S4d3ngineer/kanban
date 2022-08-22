@@ -98,6 +98,7 @@ function debounce(callback, delay = 5000) {
   }
 };
 
+// ------------------------ API CALLS --------------------------
 export const saveChanges = debounce((data) => dbSaveData(data));
 
 /** Fetches current logged user data from database
@@ -105,7 +106,7 @@ export const saveChanges = debounce((data) => dbSaveData(data));
  * @returns 
  */
 export async function dbGetUserData() {
-  const response = await fetch("http://127.0.0.1:5000/get_user_data");
+  response = await fetch("https://kanban-vanilla-js.herokuapp.com/get_user_data");
   return response.json();
 }
 
@@ -114,7 +115,7 @@ export async function dbGetUserData() {
  * @param { Array<Tables> } data 
  */
 async function dbSaveData(data) {
-  const response = await fetch("http://127.0.0.1:5000/update_user_data", {
+  const response = await fetch("https://kanban-vanilla-js.herokuapp.com/update_user_data", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
