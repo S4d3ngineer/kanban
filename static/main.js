@@ -1,4 +1,4 @@
-import { deepCopy, insertTable, saveChanges, dbGetUserData } from "./helpers.js";
+import { deepCopy, insertTable, saveChanges, dbGetUserData, insertToast } from "./helpers.js";
 import { makeInitializeTablesAction, makeInsertTableAction } from "./actions.js";
 import { reducer } from "./reducer.js";
 
@@ -62,6 +62,10 @@ if (appRoot) {
 
   store.newSubscribe((data) => {
     if (data.initialized) {
+      const warningToast = document.querySelector(".warning");
+      if (!warningToast) {
+        insertToast("warning", "Content is about to be saved. Don't leave this page!");
+      }
       saveChanges(data.tables);
     }
   })

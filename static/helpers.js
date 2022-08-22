@@ -63,9 +63,16 @@ export function insertTable(appRoot, tableData, dispatchActionCallback) {
   appRoot.appendChild(col);
 }
 
-function insertToast(type, message) { // TODO add jdocs
+
+/**
+ * 
+ * @param { String } type 
+ * @param { String } message 
+ */
+export function insertToast(type, message) { // TODO add jdocs
   const toastRoot = document.querySelector("#custom-toast-container");
   const newToast = new Toast(type, message);
+  newToast.classList.add(type);
   toastRoot.prepend(newToast);
 
   newToast.addEventListener('click', newToast.remove);
@@ -109,8 +116,9 @@ async function dbSaveData(data) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
-    
   })
+
+  document.querySelector(".warning")?.remove();
   
    if (response.ok) {
     console.log("PUT has succeed");

@@ -9,12 +9,16 @@ export default class Toast extends HTMLElement {
                 this._class = "success";
                 this._title = "Success";
                 break;
+            case "warning":
+                this._class = "warning";
+                this._title = "Warning";
+                break;
             case "failure":
                 this._class = "failure";
                 this._title = "Error";
                 break;
             default:
-                throw new Error("Input of type is incorrect. Should be 'success' or 'failure'.");
+                throw new Error("Input of type is incorrect. Should be 'success', 'warning', 'failure'.");
         };
         this._message = message;
         
@@ -77,6 +81,11 @@ export default class Toast extends HTMLElement {
             .success  {
                 color: black;
                 background-color: PaleGreen;
+            }
+
+            .warning {
+              color: black;
+              background-color: Orange;
             }
             
             .failure {
