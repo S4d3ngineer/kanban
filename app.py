@@ -41,6 +41,10 @@ def get_user_data():
         user_id=current_user.id).order_by(Table.position).all()
     logger.debug(f'Getting user table objects: {tables}')
 
+    # If no tables exists return empty list
+    if not tables:
+        return []
+
     # Getting rid of orm object data from table dictionaries
     tables_list = []
     for table in tables:
