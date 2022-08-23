@@ -48,7 +48,10 @@ To delete task or table move mouse over task/table title in order to display del
 <img src="https://i.imgur.com/lYaPP2Y.gif" width="700"/><br>
 
 ## How to run app locally in dev mode?
-First fork and then clon the repo. Then you need to setup some environmental variables. You have to use terminal and make sure you are inside the project's directory.
+First fork and then clone the repo. **For project to work you need Python 3 and database. I use PostreSQL so I present setup viable for it, but it should be possible to get it working with any database supported by SQLAlchemy.**
+
+Next you need to setup some environmental variables. You have to use terminal and make sure you are inside the project's directory. 
+**I use Bash, so I present below commands that works with Bash. If you don't use Bash, check for commands available in your language.**
 ### Set up Flask secret key
 ```
 export FLASK_SECRET_KEY="<YOUR_OWN_SECRET_KEY>"
@@ -88,23 +91,23 @@ App should be available under http://localhost:5000
 
 ## Project structure
 - Main backend files:
-    - is app.py which contains Flask app
-    - database.py contains SQLalchemy setup with PostgreSQL
-    - models.py has database table classes
-    - forms.py contains classes used with WTForms to manage login/register forms
+    - `app.py` - Flask app
+    - `database.py` - SQLalchemy setup with PostgreSQL
+    - `models.py` - database table classes
+    - `forms.py` - classes used with WTForms to manage login/register forms
     - Project folder contains also: 
-        - logger.py which contains logger configuration for debugging purposes
-        - alembic folder and alembic.ini files associated with database migrations
-        - Procfile file for production server configuration
+        - `logger.py` - logger configuration for debugging purposes
+        - `alembic/` folder and `alembic.ini` - files associated with database migrations
+        - `Procfile` - file for production server configuration
 
 Frontend files are stored inside static and templates folders due to Flask structure convention.
 - Main frontend files:
-    - main.js is main file containing redux-like store which is central piece of this app's frontend design. main.js also initializes whole frontend
-    - reducer.js and action.js are related to store logic
-    - Table.js contains table web component
-    - Toast.js contains toast web component used for notificating user about saving data to the database
+    - `main.js` - main file containing redux-like store which is central piece of this app's frontend design. main.js also initializes whole frontend
+    - `reducer.js` and `action.js` related to store logic
+    - `Table.js` - table web component
+    - `Toast.js` - toast web component used for notificating user about saving data to the database
 
 Everthing outside of web components uses Bootstrap for CSS
 
 ## Notes
-During project development few major code refactorizations took place. To facialte development at the time frontend logic was changed so that every time user makes action that results in data alteration, such as adding, moving, editing or deleting tasks/tables, all of the tables are reloaded (removed and created a new). I know this is not a perfect solution which introduces many restrictions and problems, but I wanted to finish working on this project for now and in its current form app is functional so I left it that way. This is, of course, main subject to change if I ever decide to come back to this project.
+During project development few major code refactorizations took place. To facialte development at the time frontend logic was changed so that every time user makes action that results in data alteration, such as adding, moving, editing or deleting tasks/tables, all of the tables are reloaded (removed and created again). I know this is not a perfect solution which introduces many restrictions and problems, but I wanted to finish working on this project for now and in its current form app is functional so I left it that way. This is, of course, main subject to change when I come back to this project.
