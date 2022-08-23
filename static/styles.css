@@ -15,3 +15,9 @@ body {
     top: 70px;
     right: 20px;
 }
+
+#readme {
+    display: inline;
+    position: relative;
+    left: 40%;
+}

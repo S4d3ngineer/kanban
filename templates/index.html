@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
 
-{% block title %} Kanban - {{ title }} {% endblock %}
+{% block title %} {{ title }} {% endblock %}
 
 {% block content %}
     <div id="custom-toast-container"></div>
-    <div class="container ms-3 mt-4">
+    <div class="container-fluid ps-4 mt-4">
         <button type="button" class="btn btn-dark" id="add-table">Add Table</button>
+        <div class="container" id="readme">
+            <span>Not sure how to use the app?</span>
+            <a href="https://github.com/S4d3ngineer/kanban#readme" class="link-light">Click</a>
+        </div>
     </div>
     <div class="container-fluid d-flex mt-3 justify-content-start" id="app"></div>
 {% endblock %}

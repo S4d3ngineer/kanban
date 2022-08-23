@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %} Kanban - {{ title }} {% endblock %}
+{% block title %} {{ title }} {% endblock %}
 
 {% block content %}
 <div class="container my-3 mx-auto text-center">
@@ -17,7 +17,7 @@
     {{ form.hidden_tag() }}
 
     {{ form.username.label(class='form-label') }}
-    {{ form.username(class='form-control', autofocus='') }}
+    {{ form.username(class='form-control', autofocus='', autocomplete='off') }}
 
     {{ form.password.label(class='form-label') }}
     {{ form.password(class='form-control') }}
