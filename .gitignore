@@ -1,7 +1,6 @@
 __pycache__/
 alembic/__pycache__
 venv/
-alembic.ini
 kanban_app.log
 prime_flask.txt
 prime_venv.txt
