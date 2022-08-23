@@ -1,5 +1,6 @@
 __pycache__/
-alembic/
+alembic/__pycache__
+alembic/versions
 venv/
 alembic.ini
 kanban_app.log
