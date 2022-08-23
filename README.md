@@ -10,7 +10,8 @@ Backend uses Flask framework  and PostgreSQL (integration is managed by SQLAlche
 **For now Kanban is designated for desktop usage!**
 
 ### VideoDemo
------------ placeholder for cs50 required video --------
+This video was created because of CS50 final project requirements. Audio quiality is not the best and this README presents my app in better way.
+[Link to the video.](https://youtu.be/eQTbveBFqQA)
 
 
 ## Table of contents
