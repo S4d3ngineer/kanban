@@ -1,5 +1,7 @@
 # Kanban
 ### Description
+**App is meant to be used on desktop as native Dag and Drop API doesnt't support touch screens anyway.**
+
 This app is my final project for [CS50: Introduction to Computer Science course](https://pll.harvard.edu/course/cs50-introduction-computer-science?delta=0).
 It's purpose is to allow user to organize work by creating tables and adding tasks to the tables. User can move tasks using included drag & drop functionality inside the table and also between tables.
 
