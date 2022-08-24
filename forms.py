@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired, Length, EqualTo, Regexp
 
 class RegisterForm(FlaskForm):
     username = StringField('username', validators=[DataRequired(), Regexp(
-        "^[A-Za-z][A-Za-z0-9_]{3,19}$", message="Username should be 4-20 characters long, "
-        "start with alpha character and can contain only alpha, numeric characters and '_' symbols.")])
+        '^[A-Za-z][A-Za-z0-9_]{3,19}$", message="Username should be 4-20 characters long, '
+        'start with alpha character and can contain only alphanumeric characters and "_" symbols.')])
     password = PasswordField('password', validators=[
                              DataRequired(), Length(min=8, max=40)])
     confirm_password = PasswordField('confirm password', validators=[
