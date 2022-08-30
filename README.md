@@ -1,4 +1,8 @@
 # Kanban
+
+Link to the webstite with working app instance:
+(https://kanban-vanilla-js.herokuapp.com/)
+
 ### Description
 **App is meant to be used on desktop as native Dag and Drop API doesnt't support touch screens anyway.**
 
