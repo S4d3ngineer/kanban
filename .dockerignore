@@ -1,0 +1,8 @@
+# flyctl launch added from .gitignore
+**/__pycache__
+**/alembic/__pycache__
+**/alembic/versions
+**/venv
+**/kanban_app.log
+**/prime_flask.txt
+**/prime_venv.txt
